@@ -14,13 +14,29 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-async function insert(array) {
+async function setLista(array) {
     console.log("Insert array: " + array);
     await db.collection('boni').doc('lista').set({ lista: array })
 }
 
-async function obtain() {
+async function setUnMatched(array) {
+    await db.collection('boni').doc('listaUnMatched').set({ listaUnMatched: array })
+}
+
+async function setMatched(array) {
+    await db.collection('boni').doc('listaMatched').set({ listaMatched: array })
+}
+
+async function getLista() {
     return (await db.collection('boni').doc('lista').get()).data().lista
+}
+
+async function getListaUnMatched() {
+    return (await db.collection('boni').doc('listaUnMatched').get()).data().listaUnMatched
+}
+
+async function getListaMatched() {
+    return (await db.collection('boni').doc('listaMatched').get()).data().listaMatched
 }
 
 async function setShip(ship) {
@@ -78,10 +94,19 @@ bot.on("left_chat_member", cxt => {
 })
 
 bot.command('ship', async(ctx) => {
-    var partecipant = await obtain();
+    var unMatched = await getListaUnMatched();
+    var lista = await getLista();
+    var partecipant = unMatched.length > 2 ? unMatched : lista;
     var lastShip = await getShip();
     var lastShipDate = await getShipDate();
-    if (lastShip === "" || lastShipDate === undefined || getTimeRemaining(lastShipDate) < 0) {
+    var time;
+    if (lastShipDate != null) {
+        let lastDate = new Date(lastShipDate._seconds * 1000);
+        lastDate.setHours(0);
+        lastDate = lastDate.getTime();
+        time = getTimeRemaining(lastDate);
+    }
+    if (lastShipDate == undefined || lastShipDate == null || time >= 24) {
         var numberOfElements = partecipant.length - 1;
         var random1 = getRandomIntInclusive(0, numberOfElements);
         var user1 = (await ctx.getChatMember(partecipant[random1])).user.username;
@@ -91,11 +116,29 @@ bot.command('ship', async(ctx) => {
         }
         var user2 = (await ctx.getChatMember(partecipant[random2])).user.username;
         console.log(`${random1} e ${random2} su ${numberOfElements} ${partecipant[random1]} ${partecipant[random2]}`)
-        setShipDate(new Date().getTime());
-        lastShip = `❤` + "Ship del giorno".bold() + `💙` + "\n@" + user1 + " + @" + user2 + "= " + `💜` + " \nLa nuova ship del giorno potrà essere scelta tra... " + getTimeRemaining(lastShipDate) + " ore";
-        setShip(lastShip);
+        let newTime = new Date();
+        lastShip = `❤` + "Ship del giorno".bold() + `💙` + "\n@" + user1 + " + @" + user2 + "= " + `💜`;
+        let tomorrow = newTime;
+        tomorrow.setDate(tomorrow.getDate() + 1)
+        tomorrow.setHours(0);
+        tomorrow.setMinutes(0);
+        tomorrow.setSeconds(0);
+        await setShipDate(tomorrow);
+        await setShip(lastShip);
+
+        var matched = lista == unMatched ? [] : await getListaMatched();
+        matched.push(partecipant[random1]);
+        matched.push(partecipant[random2]);
+
+        await setMatched(matched);
+
+        partecipant = partecipant.filter((ele, index) => {
+            return index != random1 || index != random2;
+        })
+
+        await setUnMatched(partecipant);
     }
-    let message = "" + lastShip;
+    let message = "" + lastShip + "La nuova ship del giorno potrà essere scelta tra... " + (getTimeRemaining(new Date().getTime())) + " ore";
     ctx.replyWithHTML(message);
 })
 
@@ -112,8 +155,26 @@ bot.command('live', (ctx) => {
 })
 
 bot.command('list', async(ctx) => {
-    const partecipant = await obtain();
+    const partecipant = await getLista();
     let toRet = "Passeggeri della Nave🛳 ❤:\n";
+    for (let ele of partecipant) {
+        toRet += (await ctx.getChatMember(ele)).user.username + ","
+    }
+    ctx.replyWithHTML(toRet.substring(0, toRet.length - 1));
+})
+
+bot.command('matched', async(ctx) => {
+    const partecipant = await getListaMatched();
+    let toRet = "Passeggeri della Nave che hanno trovato il loro BONO 🛳 ❤:\n";
+    for (let ele of partecipant) {
+        toRet += (await ctx.getChatMember(ele)).user.username + ","
+    }
+    ctx.replyWithHTML(toRet.substring(0, toRet.length - 1));
+})
+
+bot.command('unmatched', async(ctx) => {
+    const partecipant = await getListaUnMatched();
+    let toRet = "Passeggeri della Nave soli e soletti 🛳 💔:\n";
     for (let ele of partecipant) {
         toRet += (await ctx.getChatMember(ele)).user.username + ","
     }
@@ -141,18 +202,18 @@ bot.command('poll', async(ctx) => {
         ctx.reply("Commando errato, prova a inserire l'argomento tra gli asterischi e ridare il commando");
 })
 
-function getTimeRemaining(today) {
-    const tomorrow = new Date(today)
+function getTimeRemaining(momentInteressed) {
+    let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1)
     tomorrow.setHours(0);
-
-
-    const total = tomorrow - today;
+    tomorrow = tomorrow.getTime()
+    const total = tomorrow - momentInteressed;
     const secondi = total / 1000;
     const minuti = secondi / 60;
-    const ore = minuti / 60;
+    let ore = minuti / 60;
     console.log(ore)
-
+    ore = ore.toFixed(0);
+    console.log(ore)
     return ore;
 }
 
@@ -165,11 +226,11 @@ function getRandomIntInclusive(min, max) {
 async function addToListaShip(ctx) {
     var user = ctx.update.message.from;
 
-    var partecipant = await obtain();
+    var partecipant = await getLista();
     if (!partecipant.includes(user.id)) {
         ctx.reply("Abbiamo un nuovo compagno qui sulla nave: " + user.username);
         partecipant.push(user.id);
-        insert(partecipant);
+        setLista(partecipant);
     } else {
         ctx.reply("Bono già inserito");
     }
@@ -177,19 +238,19 @@ async function addToListaShip(ctx) {
 
 async function removeFromListaShip(ctx) {
     var user = ctx.update.message.from;
-    var partecipant = await obtain();
+    var partecipant = await getLista();
     if (partecipant.includes(user.id)) {
         ctx.reply("Bono rimosso: " + user.username);
         partecipant = partecipant.filter(ele => {
             return ele != user.id;
         })
-        insert(partecipant);
+        setLista(partecipant);
     } else {
         ctx.reply("Bono non inserito");
     }
 }
 
-// Start webhook via launch method (preferred)
+// Start webhook via launch method(preferred)
 bot.launch({
         webhook: {
             domain: 'https://bot-boni.herokuapp.com',
