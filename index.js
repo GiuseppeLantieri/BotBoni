@@ -5,9 +5,9 @@ const admin = require('firebase-admin');
 
 const port = process.env.PORT
 
-var API_TOKEN = process.env.TOKEN;
-
 const serviceAccount = JSON.parse(process.env.FIREBASE);
+
+var API_TOKEN = process.env.TOKEN;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -133,7 +133,11 @@ bot.command('ship', async(ctx) => {
         await setMatched(matched);
 
         partecipant = partecipant.filter((ele, index) => {
-            return index != random1 || index != random2;
+            return index != random1;
+        })
+
+        partecipant = partecipant.filter((ele, index) => {
+            return index != random2;
         })
 
         await setUnMatched(partecipant);
@@ -158,7 +162,11 @@ bot.command('list', async(ctx) => {
     const partecipant = await getLista();
     let toRet = "Passeggeri della Nave🛳 ❤:\n";
     for (let ele of partecipant) {
-        toRet += (await ctx.getChatMember(ele)).user.username + ","
+        try {
+            toRet += (await ctx.getChatMember(ele)).user.username + ","
+        } catch (e) {
+            console.log(e)
+        }
     }
     ctx.replyWithHTML(toRet.substring(0, toRet.length - 1));
 })
@@ -250,7 +258,6 @@ async function removeFromListaShip(ctx) {
     }
 }
 
-// Start webhook via launch method(preferred)
 bot.launch({
         webhook: {
             domain: 'https://bot-boni.herokuapp.com',
