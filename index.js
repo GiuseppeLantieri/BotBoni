@@ -155,7 +155,7 @@ bot.command("removeme", (ctx) => {
 })
 
 bot.command('live', (ctx) => {
-    ctx.reply("🟣SchedulONA🟣\nLunedì - 21:30 - Just Chatting\nMercoledì - 21:30 - Il gioco varia\nSabato - 15:00 - Animal Crossing\nLink canale ⬇ ⬇ ⬇\nhttps://www.twitch.tv/ruby_rust");
+    ctx.reply("🟣SchedulONA🟣\nLunedì - 21:30 - Just Chatting\nMercoledì - 21:30 - Gaming Night\nSabato - 15:00 - Animal Crossing\nLink canale ⬇ ⬇ ⬇\nhttps://www.twitch.tv/ruby_rust");
 })
 
 bot.command('list', async(ctx) => {
