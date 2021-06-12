@@ -164,7 +164,7 @@ bot.command('horny_laws', (ctx) => {
 })
 
 bot.command('list', async(ctx) => {
-    const partecipant = await getLista();
+    let partecipant = await getLista();
     let toRet = "Passeggeri della Nave🛳 ❤:\n";
     let nameToRemove = [];
     for (let ele of partecipant) {
