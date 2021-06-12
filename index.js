@@ -158,7 +158,7 @@ bot.command('live', (ctx) => {
     ctx.reply("🟣SchedulONA🟣\nLunedì - 21:30 - Just Chatting\nMercoledì - 21:30 - Gaming Night\nSabato - 15:00 - Animal Crossing\nLink canale ⬇ ⬇ ⬇\nhttps://www.twitch.tv/ruby_rust");
 })
 bot.command('horny_laws', (ctx) => {
-    ctx..replyWithHTML(
+    ctx.replyWithHTML(
         "**Regole dell'HornyTime**\n\n•Vietati nudini e foto horny esplicite (anche se censurate) :x:\n\n•Vietato scendere nei dettagli quando si parla di horny e niente cose troppo personali :flushed:\n\n•Si può parlare di kink oltre le 23 :link:\n\n•Utilizzare un linguaggio nei limiti dell'accettabile e non spinto 🤭\n\n•Si può trasgredire solo in privato 🤫"
     );
 })
