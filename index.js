@@ -166,14 +166,28 @@ bot.command('horny_laws', (ctx) => {
 bot.command('list', async(ctx) => {
     const partecipant = await getLista();
     let toRet = "Passeggeri della Nave🛳 ❤:\n";
+    let nameToRemove = [];
     for (let ele of partecipant) {
         try {
-            toRet += (await ctx.getChatMember(ele)).user.username + ","
+            let name = await ctx.getChatMember(ele)).user.username;
+            if(name != undefined){
+                toRet += name + ","
+            }else{
+                console.log(ele)
+                nameToRemove.push(ele);
+            }
         } catch (e) {
             console.log(e)
         }
     }
     ctx.replyWithHTML(toRet.substring(0, toRet.length - 1));
+    
+    for(let remove of nameToRemove){
+        partecipant = partecipant.filter(ele => {
+            return ele != remove;
+        })
+    }
+    setLista(partecipant);
 })
 
 bot.command('matched', async(ctx) => {
