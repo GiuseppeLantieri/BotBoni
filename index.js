@@ -159,7 +159,7 @@ bot.command('live', (ctx) => {
 })
 bot.command('horny_laws', (ctx) => {
     ctx.replyWithHTML(
-        "**Regole dell'HornyTime**\n\n•Vietati nudini e foto horny esplicite (anche se censurate) :x:\n\n•Vietato scendere nei dettagli quando si parla di horny e niente cose troppo personali :flushed:\n\n•Si può parlare di kink oltre le 23 :link:\n\n•Utilizzare un linguaggio nei limiti dell'accettabile e non spinto 🤭\n\n•Si può trasgredire solo in privato 🤫"
+        "Regole dell'HornyTime".bold() + "\n\n•Vietati nudini e foto horny esplicite (anche se censurate) ❌\n\n•Vietato scendere nei dettagli quando si parla di horny e niente cose troppo personali 😳\n\n•Si può parlare di kink oltre le 23 🔗\n\n•Utilizzare un linguaggio nei limiti dell'accettabile e non spinto 🤭\n\n•Si può trasgredire solo in privato 🤫"
     );
 })
 
