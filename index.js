@@ -169,7 +169,7 @@ bot.command('list', async(ctx) => {
     let nameToRemove = [];
     for (let ele of partecipant) {
         try {
-            let name = await ctx.getChatMember(ele)).user.username;
+            let name = await (ctx.getChatMember(ele)).user.username;
             if(name != undefined){
                 toRet += name + ","
             }else{
