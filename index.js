@@ -94,6 +94,7 @@ bot.on("left_chat_member", cxt => {
 })
 
 bot.command('ship', async(ctx) => {
+    var tentativi = 0;
     var unMatched = await getListaUnMatched();
     var lista = await getLista();
     var partecipant = unMatched.length > 2 ? unMatched : lista;
@@ -124,6 +125,9 @@ bot.command('ship', async(ctx) => {
             } catch (e) {
                 console.error(e);
                 console.log("Random",random1,random2);
+                tentativi++;
+                if(tentativi>5)
+                    return;
             }
         }
         let newTime = new Date();
