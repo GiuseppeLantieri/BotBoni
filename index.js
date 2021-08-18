@@ -123,6 +123,7 @@ bot.command('ship', async(ctx) => {
                 riuscita = true;
             } catch (e) {
                 console.error(e);
+                console.log("Random",random1,random2);
             }
         }
         let newTime = new Date();
