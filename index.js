@@ -122,7 +122,7 @@ bot.command('ship', async(ctx) => {
                 lastShip = `❤` + "Ship del giorno".bold() + `💙` + "\n@" + user1 + " + @" + user2 + "= " + `💜`;
                 riuscita = true;
             } catch (e) {
-
+                console.error(e);
             }
         }
         let newTime = new Date();
@@ -168,7 +168,7 @@ bot.command('list', async(ctx) => {
         try {
             toRet += (await ctx.getChatMember(ele)).user.username + ","
         } catch (e) {
-            console.log(e)
+            console.error(e)
         }
     }
     ctx.replyWithHTML(toRet.substring(0, toRet.length - 1));
@@ -222,9 +222,9 @@ function getTimeRemaining(momentInteressed) {
     const secondi = total / 1000;
     const minuti = secondi / 60;
     let ore = minuti / 60;
-    console.log(ore)
+    console.log("ORE",ore)
     ore = ore.toFixed(0);
-    console.log(ore)
+    console.log("ORE",ore)
     return ore;
 }
 
