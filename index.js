@@ -84,7 +84,7 @@ bot.start((context) => {
 })
 
 bot.on("new_chat_members", context => {
-    context.replyWithHTML("Benvenutə".bold() + `\nAbbonatə o no, rimarrai sempre troppə bonə! L'importante è rimanere attivə qui e su Twitch.\n\nRicorda anche di:\n🐸-Lavare le manine prima dei pasti.\n🐸-Essere horny (entro i limiti della civiltà)\n🐸-Chiedere il permesso ai mod per lo spam.\n🐸-Essere rispettosə (niente razzismo,  omotransfobia e offese).\n\nRispetta queste semplici regole o qualcuno potrebbe morire per cause sconosciute.\n\nuwu out of context`);
+    context.replyWithHTML("Benvenutə".bold() + `\nPuoi rimanere sul gruppo anche se è scaduto l'abbonamento (ma cerca di essere attivə e abbonarti quando possibile).\nRispetta le seguenti regole o qualcuno potrebbe farsi male🔪:\n🐸-Lavare le manine prima dei pasti.\n🐸-Essere horny (entro i limiti della civiltà)\n🐸-Chiedere il permesso ai mod per lo spam.\n🐸-Essere rispettosə (niente razzismo,  omotransfobia e offese).\n\nRispetta queste semplici regole.\n💜Non dimenticare di dirci i tuoi pronomi💜.\n\nuwu out of context`);
     addToListaShip(context);
 })
 
