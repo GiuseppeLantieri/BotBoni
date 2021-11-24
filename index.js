@@ -84,7 +84,16 @@ bot.start((context) => {
 })
 
 bot.on("new_chat_members", context => {
-    context.replyWithHTML("Benvenutə".bold() + `\nPuoi rimanere sul gruppo anche se è scaduto l'abbonamento (ma cerca di essere attivə e abbonarti quando possibile).\nRispetta le seguenti regole o qualcuno potrebbe farsi male🔪:\n🐸-Lavare le manine prima dei pasti.\n🐸-Essere horny (entro i limiti della civiltà)\n🐸-Chiedere il permesso ai mod per lo spam.\n🐸-Essere rispettosə (niente razzismo,  omotransfobia e offese).\n\nRispetta queste semplici regole.\n💜Non dimenticare di dirci i tuoi pronomi💜.\n\nuwu out of context`);
+    context.replyWithHTML(
+"👽🪐✨Benvenutə✨🪐👽\n\n".bold()+
+"Puoi rimanere sul gruppo anche se è scaduto l'abbonamento (ma cerca di essere attivə e abbonarti quando possibile).\n\n".bold() +
+"🤖-Lavare sempre le manine prima dei pasti.\n"+
+"🤖-Essere rispettosə (niente razzismo, omotransfobia, offese e discriminazione in generale).\n"+
+"🤖-Chiedere il permesso ai mod per lo spam e per fissare messaggi e sondaggi.\n"+
+"💜Non dimenticare di dirci i tuoi pronomi💜\n\n".bold()+
+"uwu out of context\n\n"+
+"🐸🪑"
+    );
     addToListaShip(context);
 })
 
